@@ -22,8 +22,8 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import project.model.InvHeaderTableModel;
-import project.model.InvLineTableModel;
+import Project_Controller.InvHeaderController;
+import Project_Controller.InvLineController;
 import project.model.InvoiceHeader;
 import project.model.InvoiceLine;
 
@@ -402,9 +402,9 @@ public class ProjectFrame extends javax.swing.JFrame implements ActionListener, 
     private javax.swing.JMenuItem saveFileMenuItem;
     // End of variables declaration//GEN-END:variables
 
-    private ArrayList<InvoiceHeader> filesData = new ArrayList<>();
-    private InvHeaderTableModel headerTableModel;
-    private InvLineTableModel lineTableModel;
+    public  ArrayList<InvoiceHeader> filesData = new ArrayList<>();
+    private InvHeaderController headerTableModel;
+    private InvLineController lineTableModel;
     private SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
     private InvHeaderDialog headerDialog;
     private InvLineDialog lineDialog;
@@ -463,6 +463,10 @@ public class ProjectFrame extends javax.swing.JFrame implements ActionListener, 
                 Date invDate = df.parse(invDateStr);
                 InvoiceHeader header = new InvoiceHeader(invNum, invDate, custName);
                 filesData.add(header);
+                System.out.print(invNum);
+                System.out.print(invDate);
+                System.out.println(custName);
+                
             }
             br.close();
             fr.close();
@@ -478,6 +482,7 @@ public class ProjectFrame extends javax.swing.JFrame implements ActionListener, 
                     String[] lineSegments = line.split(",");
                     String invNumStr = lineSegments[0];
                     String item = lineSegments[1]; // "22-11-2020"
+                    
                     String priceStr = lineSegments[2];
                     String countStr = lineSegments[3];
                     int invNum = Integer.parseInt(invNumStr);
@@ -486,12 +491,17 @@ public class ProjectFrame extends javax.swing.JFrame implements ActionListener, 
                     InvoiceHeader header = findByNum(invNum);
                     InvoiceLine invLine = new InvoiceLine(item, price, count, header);
                     header.addLine(invLine);
+                    System.out.print(invNum);
+                    System.out.print(item);
+                    System.out.print(price);
+                    System.out.println(count);
                 }
                 br.close();
                 fr.close();
-                headerTableModel = new InvHeaderTableModel(filesData);
+                headerTableModel = new InvHeaderController(filesData);
                 headerTable.setModel(headerTableModel);
                 headerTable.validate();
+                
             }
         }
     }
@@ -518,6 +528,7 @@ public class ProjectFrame extends javax.swing.JFrame implements ActionListener, 
                 for (int i = 0; i < headerTable.getRowCount(); ++i) {
                     for (int j = 0; j < headerTable.getColumnCount(); ++j) {
                         String s = headerTable.getValueAt(i, j).toString();
+                        System.out.println(s);
                         fileWriter.print(s);
                         fileWriter.print(",");
                     }
@@ -540,6 +551,7 @@ public class ProjectFrame extends javax.swing.JFrame implements ActionListener, 
                 for (int i = 0; i < lineTable.getRowCount(); ++i) {
                     for (int j = 0; j < lineTable.getColumnCount(); ++j) {
                         String s = lineTable.getValueAt(i, j).toString();
+                        System.out.println(s);
                         fileWriter.print(s);
                         fileWriter.print(",");
                     }
@@ -590,7 +602,7 @@ public class ProjectFrame extends javax.swing.JFrame implements ActionListener, 
        invNumLbl.setText(""+row.getInvNum());
        invTotalLbl.setText(""+row.getInvTotal());
        ArrayList<InvoiceLine> lines = row.getLines();
-       lineTableModel = new InvLineTableModel(lines);
+       lineTableModel = new InvLineController(lines);
        lineTable.setModel(lineTableModel);
        lineTableModel.fireTableDataChanged();
         }

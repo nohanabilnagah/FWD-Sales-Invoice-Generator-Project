@@ -1,15 +1,16 @@
-package project.model;
+package Project_Controller;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import project.model.InvoiceHeader;
 
-public class InvHeaderTableModel extends DefaultTableModel {
+public class InvHeaderController extends DefaultTableModel {
 
     String[] cols = {"No.", "Invoice Date", "Customer Name", "Total"};
     ArrayList<InvoiceHeader> data;
 
-    public InvHeaderTableModel(ArrayList<InvoiceHeader> data) {
+    public InvHeaderController(ArrayList<InvoiceHeader> data) {
         this.cols = cols;
         this.data = data;
     }
@@ -45,7 +46,7 @@ public class InvHeaderTableModel extends DefaultTableModel {
 
     @Override
     public String getColumnName(int column) {
-        System.out.println("col name called");
+     //   System.out.println("col name called");
         return cols[column];
     }
 

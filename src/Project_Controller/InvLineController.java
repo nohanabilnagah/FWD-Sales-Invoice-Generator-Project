@@ -1,19 +1,20 @@
-package project.model;
+package Project_Controller;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import project.model.InvoiceLine;
 
 /**
  *
  * @author Noha_Nabil_Nagah
  */
-public class InvLineTableModel extends DefaultTableModel {
+public class InvLineController extends DefaultTableModel {
 
     String[] cols = {"Item Name", "Item Price", "Count", "Line Total"};
     ArrayList<InvoiceLine> data;
 
-    public InvLineTableModel(ArrayList<InvoiceLine> data) {
+    public InvLineController(ArrayList<InvoiceLine> data) {
         this.data = data;
     }
 
@@ -44,7 +45,7 @@ public class InvLineTableModel extends DefaultTableModel {
 
     @Override
         public String getColumnName(int column) {
-        System.out.println("col name called");
+       // System.out.println("col name called");
         return cols[column];
     }
 
