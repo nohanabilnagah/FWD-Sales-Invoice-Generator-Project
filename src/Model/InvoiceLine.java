@@ -1,6 +1,4 @@
-package project.model;
-import javax.swing.*;
-import java.util.ArrayList;
+package Model;
 
 public class InvoiceLine  {
     private String itemName;

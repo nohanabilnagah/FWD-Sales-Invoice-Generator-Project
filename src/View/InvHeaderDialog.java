@@ -1,5 +1,5 @@
 
-package project.view;
+package View;
 
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -35,8 +35,8 @@ public class InvHeaderDialog extends JDialog {
         insertBtn.setActionCommand("creatInvOK");
         cancelBtn.setActionCommand("creatInvCancel");
 
-        insertBtn.addActionListener(pf);
-        cancelBtn.addActionListener(pf);
+        insertBtn.addActionListener(pf.getFileOperations());
+        cancelBtn.addActionListener(pf.getFileOperations());
 
         setLayout(new GridLayout(3, 2));
         

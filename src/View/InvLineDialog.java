@@ -1,5 +1,5 @@
 
-package project.view;
+package View;
 
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -41,8 +41,8 @@ public class InvLineDialog extends JDialog {
         insertBtn.setActionCommand("creatLineOK");
         cancelBtn.setActionCommand("creatLineCancel");
 
-        insertBtn.addActionListener(pf);
-        cancelBtn.addActionListener(pf);
+        insertBtn.addActionListener(pf.getFileOperations());
+        cancelBtn.addActionListener(pf.getFileOperations());
 
         setLayout(new GridLayout(4, 2));
         
