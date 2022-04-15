@@ -49,15 +49,14 @@ public class ProjectFrame extends javax.swing.JFrame {
         invTotal = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lineTable = new javax.swing.JTable();
-        lineTable.getSelectionModel().addListSelectionListener(controller);
         invNumLbl = new javax.swing.JLabel();
         custNameTF = new javax.swing.JTextField();
         invDateTF = new javax.swing.JTextField();
         invTotalLbl = new javax.swing.JLabel();
         insertItemBtn = new javax.swing.JButton();
         insertItemBtn.addActionListener(controller);
-        cancelChanges = new javax.swing.JButton();
-        cancelChanges.addActionListener(controller);
+        deleteChanges = new javax.swing.JButton();
+        deleteChanges.addActionListener(controller);
         invItem = new javax.swing.JLabel();
         invTable = new javax.swing.JLabel();
         invNum1 = new javax.swing.JLabel();
@@ -78,7 +77,6 @@ public class ProjectFrame extends javax.swing.JFrame {
 
             }
         ));
-        headerTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(headerTable);
 
         newInv.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -109,7 +107,6 @@ public class ProjectFrame extends javax.swing.JFrame {
 
             }
         ));
-        lineTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(lineTable);
 
         custNameTF.addActionListener(new java.awt.event.ActionListener() {
@@ -128,9 +125,9 @@ public class ProjectFrame extends javax.swing.JFrame {
         insertItemBtn.setText("Insert New Item ");
         insertItemBtn.setActionCommand("InsertItem");
 
-        cancelChanges.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        cancelChanges.setText("Delete Changes");
-        cancelChanges.setActionCommand("DeleteItem");
+        deleteChanges.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        deleteChanges.setText("Delete Changes");
+        deleteChanges.setActionCommand("DeleteChanges");
 
         invItem.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         invItem.setForeground(new java.awt.Color(0, 0, 153));
@@ -215,7 +212,7 @@ public class ProjectFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
                         .addComponent(insertItemBtn)
                         .addGap(109, 109, 109)
-                        .addComponent(cancelChanges)
+                        .addComponent(deleteChanges)
                         .addGap(92, 92, 92)))
                 .addContainerGap())
         );
@@ -255,7 +252,7 @@ public class ProjectFrame extends javax.swing.JFrame {
                     .addComponent(newInv)
                     .addComponent(deleteInv)
                     .addComponent(insertItemBtn)
-                    .addComponent(cancelChanges))
+                    .addComponent(deleteChanges))
                 .addContainerGap(69, Short.MAX_VALUE))
         );
 
@@ -315,9 +312,9 @@ public class ProjectFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelChanges;
     private javax.swing.JLabel cusName;
     private javax.swing.JTextField custNameTF;
+    private javax.swing.JButton deleteChanges;
     private javax.swing.JButton deleteInv;
     private javax.swing.JTable headerTable;
     private javax.swing.JButton insertItemBtn;
@@ -362,7 +359,7 @@ public class ProjectFrame extends javax.swing.JFrame {
         this.headerTableModel = headerTableModel;
     }
 
-    public void setLineTableModel(InvLineModel lineTableModel) {
+    public void setInvLineModel(InvLineModel lineTableModel) {
         this.lineTableModel = lineTableModel;
     }
     
@@ -372,8 +369,8 @@ public class ProjectFrame extends javax.swing.JFrame {
         return invoiceHeader;
     }
 
-    public JButton getCancelChanges() {
-        return cancelChanges;
+    public JButton getDeleteChanges() {
+        return deleteChanges;
     }
 
     public JLabel getCusName() {
@@ -472,7 +469,7 @@ public class ProjectFrame extends javax.swing.JFrame {
         return lineDialog;
     }
 
-    public MyController getFileOperations() {
+    public MyController getMyController() {
         return controller;
     }
     

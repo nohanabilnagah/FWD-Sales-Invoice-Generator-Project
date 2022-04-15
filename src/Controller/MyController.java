@@ -51,8 +51,8 @@ public class MyController implements ActionListener, ListSelectionListener {
             deleteInv();
         } else if (e.getActionCommand().equals("InsertItem")) {
             insertItemBtn();
-        } else if (e.getActionCommand().equals("cancelChanges")) {
-            cancelChanges();
+        } else if (e.getActionCommand().equals("DeleteChanges")) {
+            deleteChanges();
         } else if (e.getActionCommand().equals("creatInvOK")) {
             creatInvOK();
         } else if (e.getActionCommand().equals("creatInvCancel")) {
@@ -88,14 +88,14 @@ public class MyController implements ActionListener, ListSelectionListener {
         InvoiceHeader header = frame.getHeaderTableModel().getData().get(invIndex);
         frame.getHeaderTableModel().getData().remove(invIndex);
         frame.getHeaderTableModel().fireTableDataChanged();
-        frame.setLineTableModel(new InvLineModel(new ArrayList<InvoiceLine>()));
+        frame.setInvLineModel(new InvLineModel(new ArrayList<InvoiceLine>()));
         frame.getLineTable().setModel(frame.getLineTableModel());
         frame.getLineTableModel().fireTableDataChanged();
         frame.getCustNameTF().setText("");
         frame.getInvDateTF().setText("");
         frame.getInvNumLbl().setText("");
         frame.getInvTotalLbl().setText("");
-
+        displayInvoices();
     }
 
     private void insertItemBtn() {
@@ -103,14 +103,24 @@ public class MyController implements ActionListener, ListSelectionListener {
         frame.getLineDialog().setVisible(true);
     }
 
-    public void cancelChanges() {
+  /*  private void deleteChanges() {
+        int indexrow = frame.getLineTable().getSelectedRow();
+        InvoiceLine line = frame.getLineTableModel().getData().get(indexrow);
+        frame.getLineTableModel().getData().remove(indexrow);
+        frame.getLineTableModel().fireTableDataChanged();
+        frame.getHeaderTableModel().fireTableDataChanged();
+        frame.getInvTotalLbl().setText("" + line.getInvoiceHeader().getInvTotal());
+        displayInvoices();
+    }*/
+    
+        public void deleteChanges() {
         int indexrow = frame.getLineTable().getSelectedRow();
         if (indexrow >= 0) {
             frame.getLineTableModel().removeRow(indexrow);
             frame.getLineTableModel().fireTableDataChanged();
         }
     }
-
+    
     private void headerTableRowSelected() {
         int selectedRowIndex = frame.getHeaderTable().getSelectedRow();
         //filesData.get(selectedRowIndex); 
@@ -118,11 +128,12 @@ public class MyController implements ActionListener, ListSelectionListener {
 
             InvoiceHeader row = frame.getHeaderTableModel().getData().get(selectedRowIndex);
             frame.getCustNameTF().setText(row.getCusName());
-            frame.getInvDateTF().setText(row.getInvDate().toString());
+            //frame.getInvDateTF().setText(row.getInvDate().toString());
+            frame.getInvDateTF().setText(df.format(row.getInvDate()));
             frame.getInvNumLbl().setText("" + row.getInvNum());
             frame.getInvTotalLbl().setText("" + row.getInvTotal());
             ArrayList<InvoiceLine> lines = row.getLines();
-            frame.setLineTableModel(new InvLineModel(lines));
+            frame.setInvLineModel(new InvLineModel(lines));
             frame.getLineTable().setModel(frame.getLineTableModel());
             frame.getLineTableModel().fireTableDataChanged();
         }
@@ -139,7 +150,7 @@ public class MyController implements ActionListener, ListSelectionListener {
         }
         frame.getHeaderDialog().setVisible(false);
         int num = getMaxInvNum() + 1;
-        InvoiceHeader newInvHeader = new InvoiceHeader(num, invDate, cusName);
+        InvoiceHeader newInvHeader = new InvoiceHeader(num, cusName, invDate);
         frame.getFilesData().add(newInvHeader);
         frame.getHeaderTableModel().fireTableDataChanged();
         System.out.println("check");
@@ -157,6 +168,8 @@ public class MyController implements ActionListener, ListSelectionListener {
 
     private void creatInvCancel() {
         frame.getHeaderDialog().setVisible(false);
+        frame.getHeaderDialog().dispose();
+        frame.setHeaderDialog(null);
     }
 
     private void creatLineOK() {
@@ -177,6 +190,16 @@ public class MyController implements ActionListener, ListSelectionListener {
 
     private void creatLineCancel() {
         frame.getLineDialog().setVisible(false);
+        frame.getLineDialog().dispose();
+        frame.setLineDialog(null);
     }
 
+    
+        private void displayInvoices() {
+        System.out.println("***************************");
+        for (InvoiceHeader header : frame.getFilesData()) {
+            System.out.println(header);
+        }
+        System.out.println("***************************");
+    }
 }

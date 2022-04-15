@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import Model.InvoiceLine;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  *
@@ -11,36 +14,51 @@ import Model.InvoiceLine;
  */
 public class InvLineModel extends DefaultTableModel {
 
+    private ArrayList<InvoiceLine> invoiceLines;
+    private DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     String[] cols = {"Item Name", "Item Price", "Count", "Line Total"};
-    ArrayList<InvoiceLine> data;
+    
 
-    public InvLineModel(ArrayList<InvoiceLine> data) {
-        this.data = data;
+    public InvLineModel(ArrayList<InvoiceLine> invoiceLines) {
+        this.invoiceLines = invoiceLines;
     }
 
+        public ArrayList<InvoiceLine> getInvoiceLines() {
+        return invoiceLines;
+    }
+    
     @Override
     public int getRowCount() {
-        if (this.data == null) {
-            data = new ArrayList<>();
+        if (this.invoiceLines == null) {
+            invoiceLines = new ArrayList<>();
         }
-        return data.size();
+        return invoiceLines.size();
     }
 
-@Override
+        @Override
         public int getColumnCount() {
         return cols.length;
     }
 
+        
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+        
+        
     @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-        InvoiceLine row = data.get(rowIndex);
+        InvoiceLine row = invoiceLines.get(rowIndex);
+        
         switch (columnIndex) {
           case 0: return row.getItemName();
           case 1: return row.getItemPrice();
-          case 2: return row.getCount();
+          case 2: return row.getItemCount();
           case 3: return row.getItemTotal();
-        }
-        return "";
+        default:
+                return "";
+        } 
     }
 
     @Override
@@ -49,13 +67,10 @@ public class InvLineModel extends DefaultTableModel {
         return cols[column];
     }
 
-    public ArrayList<InvoiceLine> getData() {
-        return data;
-    }
 
     @Override
         public void removeRow(int row) {
-        data.remove(row);
+        invoiceLines.remove(row);
     }
     
 }

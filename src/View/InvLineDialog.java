@@ -41,8 +41,8 @@ public class InvLineDialog extends JDialog {
         insertBtn.setActionCommand("creatLineOK");
         cancelBtn.setActionCommand("creatLineCancel");
 
-        insertBtn.addActionListener(pf.getFileOperations());
-        cancelBtn.addActionListener(pf.getFileOperations());
+        insertBtn.addActionListener(pf.getMyController());
+        cancelBtn.addActionListener(pf.getMyController());
 
         setLayout(new GridLayout(4, 2));
         

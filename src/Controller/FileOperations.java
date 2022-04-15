@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this license inv, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -37,41 +37,45 @@ public class FileOperations {
     public void loadFiles() throws Exception {
         frame.getFilesData().clear();
         JOptionPane.showMessageDialog(frame, "Please select Invoice header file", "Invoice Header", JOptionPane.WARNING_MESSAGE);
-        JFileChooser fc = new JFileChooser();
-        int option = fc.showOpenDialog(frame);
-        if (option == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fc.getSelectedFile();
-            FileReader fr = new FileReader(selectedFile);
-            BufferedReader br = new BufferedReader(fr);
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                String[] headerSegments = line.split(",");
+        JFileChooser openFile = new JFileChooser();
+        int result = openFile.showOpenDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File headerFile = openFile.getSelectedFile();
+          //  try {
+            FileReader headerFr = new FileReader(headerFile);
+            BufferedReader headerBr = new BufferedReader(headerFr);
+            String headerLine = null;
+           
+            while ((headerLine = headerBr.readLine()) != null) {
+                String[] headerSegments = headerLine.split(",");
                 String invNumStr = headerSegments[0];
                 String invDateStr = headerSegments[1]; // "22-11-2020"
                 String custName = headerSegments[2];
+               
                 int invNum = Integer.parseInt(invNumStr);
                 Date invDate = df.parse(invDateStr);
-                InvoiceHeader header = new InvoiceHeader(invNum, invDate, custName);
-                frame.getFilesData().add(header);
-                
+               
+                InvoiceHeader inv = new InvoiceHeader(invNum, custName, invDate);
+                frame.getFilesData().add(inv); 
             }
-            br.close();
-            fr.close();
+            headerBr.close();
+            headerFr.close();
             System.out.println("check");
             JOptionPane.showMessageDialog(frame, "Please select Invoice lines file", "Invoice Lines", JOptionPane.WARNING_MESSAGE);
-            option = fc.showOpenDialog(frame);
-            if (option == JFileChooser.APPROVE_OPTION) {
-                selectedFile = fc.getSelectedFile();
-                fr = new FileReader(selectedFile);
-                br = new BufferedReader(fr);
-                line = null;
-                while ((line = br.readLine()) != null) {
-                    String[] lineSegments = line.split(",");
+            result = openFile.showOpenDialog(frame);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File linesFile = openFile.getSelectedFile();
+                BufferedReader linesBr = new BufferedReader(new FileReader(linesFile));
+                /*headerFr = new FileReader(linesFile);
+                headerBr = new BufferedReader(headerFr);*/
+                String linesLine = null;
+                while ((linesLine = linesBr.readLine()) != null) {
+                    String[] lineSegments = linesLine.split(",");
                     String invNumStr = lineSegments[0];
-                    String item = lineSegments[1]; // "22-11-2020"
-                    
+                    String item = lineSegments[1];
                     String priceStr = lineSegments[2];
                     String countStr = lineSegments[3];
+                    
                     int invNum = Integer.parseInt(invNumStr);
                     double price = Double.parseDouble(priceStr);
                     int count = Integer.parseInt(countStr);
@@ -79,8 +83,8 @@ public class FileOperations {
                     InvoiceLine invLine = new InvoiceLine(item, price, count, header);
                     header.addLine(invLine);
                 }
-                br.close();
-                fr.close();
+                headerBr.close();
+                headerFr.close();
                 frame.setHeaderTableModel(new InvHeaderModel(frame.getFilesData()));
                 frame.getHeaderTable().setModel(frame.getHeaderTableModel());
                 frame.getHeaderTable().validate();
@@ -97,21 +101,13 @@ public class FileOperations {
                     {
                         System.out.println(frame.getFilesData().get(i).getLines().get(j).getItemName()+", "+
                                 frame.getFilesData().get(i).getLines().get(j).getItemPrice()+", "+
-                                frame.getFilesData().get(i).getLines().get(j).getCount());
+                                frame.getFilesData().get(i).getLines().get(j).getItemCount());
                     }
                     System.out.println("}");
                 } 
     }
     
-    private InvoiceHeader findByNum(int num) {
-        for (InvoiceHeader header : frame.getFilesData()) {
-            if (header.getInvNum() == num) {
-                return header;
-            }
-        }
-        return null;
-    }
-    
+   
  
     public void saveData()  {
         JFileChooser chooser = new JFileChooser();
@@ -170,9 +166,22 @@ public class FileOperations {
                     {
                         System.out.println(frame.getFilesData().get(i).getLines().get(j).getItemName()+", "+
                                 frame.getFilesData().get(i).getLines().get(j).getItemPrice()+", "+
-                                frame.getFilesData().get(i).getLines().get(j).getCount());
+                                frame.getFilesData().get(i).getLines().get(j).getItemCount());
                     }
                     System.out.println("}");
                 } 
     }
+    
+        private InvoiceHeader findByNum(int num) {
+        InvoiceHeader header = null;
+        for (InvoiceHeader inv : frame.getFilesData()) {
+            if (num == inv.getInvNum()) {
+                header = inv;
+                break;
+            }
+        }
+        return header;
+    }
+    
+    
 }

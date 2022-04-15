@@ -3,19 +3,17 @@ package Model;
 public class InvoiceLine  {
     private String itemName;
     private double itemPrice;
-    private int count;
+    private int itemCount;
     private double itemTotal;
     private InvoiceHeader invoiceHeader;
 
     public InvoiceLine(String itemName, double itemPrice, int count, InvoiceHeader invoiceHeader) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
-        this.count = count;
+        this.itemCount = count;
         this.invoiceHeader = invoiceHeader;
-        this.setItemTotal(this.count * this.itemPrice);
-        
+        this.setItemTotal(this.itemCount * this.itemPrice); 
     }
-    
 
     public String getItemName() {
         return itemName;
@@ -33,12 +31,12 @@ public class InvoiceLine  {
         this.itemPrice = itemPrice;
     }
 
-    public int getCount() {
-        return count;
+    public int getItemCount() {
+        return itemCount;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
     }
 
     public double getItemTotal() {
@@ -57,11 +55,18 @@ public class InvoiceLine  {
         this.invoiceHeader = invoiceHeader;
     }
 
-    Object getInvNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    @Override
+    public String toString() {
+        return "InvoiceLine{" + "itemName=" + itemName + ", itemprice=" + itemPrice + ", itemCount=" + itemCount + '}';
     }
     
+    public double getLineTotal() {
+        return itemCount * itemPrice;
+    }
     
-
+    public String getDataAsCSV() {
+        return "" + getInvoiceHeader().getInvNum() + "," + getItemName() + "," + getItemPrice() + "," + getItemCount();
+    }
 }
 

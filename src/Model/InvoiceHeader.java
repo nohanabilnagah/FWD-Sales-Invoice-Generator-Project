@@ -1,20 +1,22 @@
 package Model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class InvoiceHeader {
 
     private int invNum;
-    private Date invDate;
     private String cusName;
-    private double invTotal;
+    private Date invDate;
+  //  private double invTotal;
     private ArrayList<InvoiceLine> lines;
 
-    public InvoiceHeader(int invNum, Date invDate, String cusName) {
+    public InvoiceHeader(int invNum, String cusName, Date invDate) {
         this.invNum = invNum;
-        this.invDate = invDate;
         this.cusName = cusName;
+        this.invDate = invDate;
     }
 
     public int getInvNum() {
@@ -41,13 +43,24 @@ public class InvoiceHeader {
         this.cusName = cusName;
     }
 
-    public double getInvTotal() {
+ /*   public double getInvTotal() {
         return invTotal;
     }
 
     public void setInvTotal(double invTotal) {
         this.invTotal = invTotal;
+    }*/
+    
+  
+    @Override
+    public String toString() {
+        String str = "InvoiceHeader{" + "invNum=" + invNum + ", customerName=" + cusName + ", invDate=" + invDate + '}';
+        for (InvoiceLine line : getLines()) {
+            str += "\n\t" + line;
+        }
+        return str;
     }
+    
 
     public ArrayList<InvoiceLine> getLines() {
         if (lines == null) {
@@ -60,10 +73,21 @@ public class InvoiceHeader {
         this.lines = lines;
     }
     
+        public double getInvTotal() {
+        double total = 0.0;
+        for (InvoiceLine line : getLines()) {
+            total += line.getLineTotal();
+        }
+        return total;
+    }
+    
     public void addLine(InvoiceLine line) {
         getLines().add(line);
-        setInvTotal(getInvTotal() + line.getItemTotal());
+   //     setInvTotal(getInvTotal() + line.getItemTotal());
     }
-
     
+        public String getDataAsCSV() {
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return "" + getInvNum() + "," + df.format(getInvDate()) + "," + getCusName();
+    }
 }

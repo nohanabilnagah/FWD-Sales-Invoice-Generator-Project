@@ -4,11 +4,15 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import Model.InvoiceHeader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class InvHeaderModel extends DefaultTableModel {
 
     String[] cols = {"No.", "Invoice Date", "Customer Name", "Total"};
     ArrayList<InvoiceHeader> data;
+        private DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
 
     public InvHeaderModel(ArrayList<InvoiceHeader> data) {
         this.cols = cols;
@@ -33,11 +37,11 @@ public class InvHeaderModel extends DefaultTableModel {
         InvoiceHeader row = data.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return row.getInvNum();
+            return row.getInvNum();
             case 1:
-                return row.getInvDate();
+            return row.getCusName();
             case 2:
-                return row.getCusName();
+            return df.format(row.getInvDate());
             case 3:
                 return row.getInvTotal();
         }
@@ -46,7 +50,6 @@ public class InvHeaderModel extends DefaultTableModel {
 
     @Override
     public String getColumnName(int column) {
-     //   System.out.println("col name called");
         return cols[column];
     }
 
@@ -54,6 +57,11 @@ public class InvHeaderModel extends DefaultTableModel {
         return data;
     }
 
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+    
     @Override
     public void removeRow(int row) {
         data.remove(row);

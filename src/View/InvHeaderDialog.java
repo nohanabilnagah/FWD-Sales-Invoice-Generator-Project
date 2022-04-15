@@ -35,8 +35,8 @@ public class InvHeaderDialog extends JDialog {
         insertBtn.setActionCommand("creatInvOK");
         cancelBtn.setActionCommand("creatInvCancel");
 
-        insertBtn.addActionListener(pf.getFileOperations());
-        cancelBtn.addActionListener(pf.getFileOperations());
+        insertBtn.addActionListener(pf.getMyController());
+        cancelBtn.addActionListener(pf.getMyController());
 
         setLayout(new GridLayout(3, 2));
         
